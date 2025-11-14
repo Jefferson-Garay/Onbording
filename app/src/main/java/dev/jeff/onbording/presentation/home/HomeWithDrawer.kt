@@ -1,43 +1,26 @@
 package dev.jeff.onbording.presentation.home
 
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.Badge
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import dev.jeff.onbording.presentation.actividades.ActividadesScreen
-import dev.jeff.onbording.presentation.chatbot.ChatbotScreen
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 
 // --- Datos del menú (puedes expandir más tarde) ---
 private data class DrawerOption(val route: String, val label: String, val icon: androidx.compose.ui.graphics.vector.ImageVector)
@@ -54,90 +37,57 @@ private val drawerOptions = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeWithDrawer() {
-
+fun HomeWithDrawer(
+    navController: NavHostController,
+    content: @Composable () -> Unit
+) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-
-    // NavController interno del Home
-    val internalNav = rememberNavController()
-    var selectedRoute by remember { mutableStateOf("homeContent") }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier
-                    .width(280.dp)
-                    .background(Color(0xFF072B4A))
+                modifier = Modifier.fillMaxHeight(),
+                drawerContainerColor = Color(0xFF0D1B2A)
             ) {
 
-                Spacer(Modifier.height(20.dp))
-
-                drawerOptions.forEach { opt ->
-                    NavigationDrawerItem(
-                        label = { Text(opt.label, color = Color.White) },
-                        selected = selectedRoute == opt.route,
-                        onClick = {
-                            selectedRoute = opt.route
-                            scope.launch {
-                                drawerState.close()
-                                kotlinx.coroutines.delay(160)
-                                internalNav.navigate(opt.route)
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = opt.icon,
-                                contentDescription = opt.label,
-                                tint = Color.White
-                            )
-                        },
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
+                DrawerItem("Inicio") {
+                    navController.navigate("home") {
+                        popUpTo("home") { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
+
+                DrawerItem("Chatbot") { navController.navigate("chat") }
+                DrawerItem("Actividades") { navController.navigate("actividades") }
+                DrawerItem("Supervisor") { navController.navigate("supervisor") }
+                DrawerItem("Mi Información") { navController.navigate("mi_informacion") }
             }
         }
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-
-            // TopBar
-            TopAppBar(
-                title = { Text("Empresa X", color = Color.White) },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        scope.launch { drawerState.open() }
-                    }) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF0A2A43)
+        Scaffold(
+            topBar = {
+                HomeTopBar(
+                    onMenuClick = { scope.launch { drawerState.open() } }
                 )
-            )
-
-            // CONTENIDO PRINCIPAL
-            Box(Modifier.fillMaxSize()) {
-
-                NavHost(
-                    navController = internalNav,
-                    startDestination = "homeContent"
-                ) {
-
-                    composable("homeContent") { HomeContent() }
-                    composable("chat") { ChatbotScreen(onBack = { internalNav.navigate("homeContent") }) }
-                    composable("actividades") { ActividadesScreen() }
-                }
+            }
+        ) { padding ->
+            Box(Modifier.padding(padding)) {
+                content()
             }
         }
     }
 }
 @Composable
-fun DrawerItem(text: String) {
+fun DrawerItem(text: String, onClick: () -> Unit) {
     Text(
         text = text,
         color = Color.White,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable { onClick() }
     )
 }
 @OptIn(ExperimentalMaterial3Api::class)
