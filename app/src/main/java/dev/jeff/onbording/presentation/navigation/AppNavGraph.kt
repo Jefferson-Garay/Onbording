@@ -9,6 +9,8 @@ import dev.jeff.onbording.presentation.chatbot.ChatbotScreen
 
 import dev.jeff.onbording.presentation.home.HomeWithDrawer
 import dev.jeff.onbording.presentation.actividades.ActividadesScreen
+import dev.jeff.onbording.presentation.ayuda.AyudaScreen
+import dev.jeff.onbording.presentation.config.ConfiguracionScreen
 import dev.jeff.onbording.presentation.home.HomeContent
 import dev.jeff.onbording.presentation.mi_informacion.MiInformacionScreen
 import dev.jeff.onbording.presentation.supervisor.SupervisorScreen
@@ -27,5 +29,7 @@ fun AppNavGraph(startDestination: String = "login") {
         composable("actividades") { ActividadesScreen() }
         composable("supervisor") { SupervisorScreen() }
         composable("mi_informacion") { MiInformacionScreen() }
+        composable("ayuda") { AyudaScreen(navController) }
+        composable("config") { ConfiguracionScreen() }
     }
 }
