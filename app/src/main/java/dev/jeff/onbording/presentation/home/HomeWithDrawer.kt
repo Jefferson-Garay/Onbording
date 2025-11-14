@@ -45,7 +45,8 @@ private val drawerOptions = listOf(
 @Composable
 fun HomeWithDrawer(
     navController: NavHostController,
-    content: @Composable () -> Unit
+    title: String,
+    content: @Composable (NavHostController) -> Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -82,12 +83,13 @@ fun HomeWithDrawer(
         Scaffold(
             topBar = {
                 HomeTopBar(
+                    title = title,
                     onMenuClick = { scope.launch { drawerState.open() } }
                 )
             }
         ) { padding ->
             Box(Modifier.padding(padding)) {
-                content()
+                content(navController)
             }
         }
     }
@@ -121,9 +123,9 @@ fun DrawerItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar(onMenuClick: () -> Unit) {
+fun HomeTopBar(title: String, onMenuClick: () -> Unit) {
     TopAppBar(
-        title = { Text("Inicio", color = Color.White) },
+        title = { Text(title, color = Color.White) },
         navigationIcon = {
             IconButton(onClick = onMenuClick) {
                 Icon(

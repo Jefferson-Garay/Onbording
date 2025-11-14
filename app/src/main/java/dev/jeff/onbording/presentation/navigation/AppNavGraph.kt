@@ -21,15 +21,39 @@ fun AppNavGraph(startDestination: String = "login") {
     NavHost(navController = navController, startDestination = startDestination) {
         composable("login") { LoginScreen(onLogin = { navController.navigate("home") }) }
         composable("home") {
-            HomeWithDrawer(navController) {
-                HomeContent()
+            HomeWithDrawer(navController, title = "Inicio") {
+                HomeContent(navController)
             }
         }
-        composable("chat") { ChatbotScreen(onBack = { navController.popBackStack() }) }
-        composable("actividades") { ActividadesScreen() }
-        composable("supervisor") { SupervisorScreen() }
-        composable("mi_informacion") { MiInformacionScreen() }
-        composable("ayuda") { AyudaScreen(navController) }
-        composable("config") { ConfiguracionScreen() }
+        composable("chat") {
+            HomeWithDrawer(navController, title = "Chatbot") {
+                ChatbotScreen(onBack = { navController.popBackStack() })
+            }
+        }
+        composable("actividades") {
+            HomeWithDrawer(navController, title = "Actividades") {
+                ActividadesScreen()
+            }
+        }
+        composable("supervisor") {
+            HomeWithDrawer(navController, title = "Supervisor") {
+                SupervisorScreen()
+            }
+        }
+        composable("mi_informacion") {
+            HomeWithDrawer(navController, title = "Mi Información") {
+                MiInformacionScreen()
+            }
+        }
+        composable("ayuda") {
+            HomeWithDrawer(navController, title = "Ayuda") {
+                AyudaScreen(navController)
+            }
+        }
+        composable("config") {
+            HomeWithDrawer(navController, title = "Configuración") {
+                ConfiguracionScreen()
+            }
+        }
     }
 }
