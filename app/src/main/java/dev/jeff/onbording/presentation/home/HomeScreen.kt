@@ -1,71 +1,70 @@
 package dev.jeff.onbording.presentation.home
 
-import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.ui.Alignment
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.compose.material3.Card
-import dev.jeff.onbording.data.repository.FakeRepository
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    navController: NavController,
-    onOpenChat: () -> Unit
-){
-    val usuario = FakeRepository.getUsuarioActual()
-    val actividades = FakeRepository.getActividades()
+fun HomeWithDrawer(
+    navController: NavHostController,
+    content: @Composable () -> Unit
+) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-    Scaffold(topBar = {
-        TopAppBar(title = { Text("Bienvenido, ${usuario.nombre}") })
-    }) { padding ->
-        Column(
-            modifier = Modifier
-                .padding(padding)
-                .padding(16.dp)
-                .fillMaxSize()
-        ) {
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet(
+                modifier = Modifier.fillMaxHeight(),
+                drawerContainerColor = Color(0xFF0D1B2A) // azul oscuro
+            ) {
 
-            Text(text = "Supervisor: ${usuario.supervisor?.nombre ?: "Sin asignar"}")
-            Text(text = "Correo: ${usuario.supervisor?.correo ?: "-"}")
-            Text(text = "Fecha de inicio: ${usuario.fechaInicio}")
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text("Próximas actividades:", style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-
-            actividades.forEach { act ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
-                ) {
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        Text(act.titulo, style = MaterialTheme.typography.titleSmall)
-                        Text(act.descripcion, style = MaterialTheme.typography.bodySmall)
-                        Text("Fecha: ${act.fechaProgramada}", style = MaterialTheme.typography.bodySmall)
-                    }
+                // BOTÓN CERRAR
+                IconButton(onClick = { scope.launch { drawerState.close() } }) {
+                    Icon(imageVector = Icons.Default.Close, contentDescription = "Cerrar", tint = Color.White)
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                DrawerItem("Inicio")
+                DrawerItem("Chatbot")
+                DrawerItem("Actividades")
+                DrawerItem("Supervisor")
+                DrawerItem("Mi Información")
+
+                Spacer(modifier = Modifier.height(40.dp))
+
+                DrawerItem("Ayuda")
+                DrawerItem("Configuración")
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Button(
-                onClick = onOpenChat,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Abrir Chatbot")
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                HomeTopBar(
+                    onMenuClick = { scope.launch { drawerState.open() } }
+                )
             }
-
-            Button(
-                onClick = { navController.navigate("actividades") },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Actividades")
+        ) { padding ->
+            Box(modifier = Modifier.padding(padding)) {
+                content()
             }
         }
     }
 }
+
