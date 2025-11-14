@@ -49,16 +49,39 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    // Navegación en Compose
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    // Íconos de Material Design
-    implementation("androidx.compose.material:material-icons-core:1.7.4")
-    implementation("androidx.compose.material:material-icons-extended:1.7.4")
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    // Compose BOM (maneja versiones automáticamente)
+    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
+
+    // Core Compose
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+
+    // Material 3
+    implementation("androidx.compose.material3:material3")
+
+    // Activity Compose
+    implementation("androidx.activity:activity-compose:1.9.3")
+
+    // Navigation Compose
+    implementation("androidx.navigation:navigation-compose:2.8.3")
+
+    // Icons Material (SOLO los de Material 3)
+    implementation("androidx.compose.material:material-icons-core")
+    implementation("androidx.compose.material:material-icons-extended")
+
+    // AndroidX
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+
+
+    // Testing
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

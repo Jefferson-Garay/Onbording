@@ -25,7 +25,7 @@ object FakeRepository {
     }
 
     fun getActividades(): List<ActividadModel> = listOf(
-        ActividadModel(1, "Inducción General", "Conoce los beneficios de la empresa", "2025-11-12", "presencial", "Alta", "pendiente"),
-        ActividadModel(2, "Capacitación Legal", "Privacidad y protección de datos", "2025-11-14", "virtual", "Media", "pendiente")
+        ActividadModel("1", "Inducción General", "Conoce los beneficios de la empresa", "2025-11-12", "presencial", "Alta", "pendiente"),
+        ActividadModel("2", "Capacitación Legal", "Privacidad y protección de datos", "2025-11-14", "virtual", "Media", "pendiente")
     )
 }

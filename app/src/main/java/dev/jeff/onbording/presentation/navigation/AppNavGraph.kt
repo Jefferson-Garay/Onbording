@@ -8,15 +8,22 @@ import androidx.navigation.compose.rememberNavController
 import dev.jeff.onbording.presentation.auth.LoginScreen
 import dev.jeff.onbording.presentation.home.ChatbotScreen
 import dev.jeff.onbording.presentation.home.HomeScreen
+import dev.jeff.onbording.presentation.home.actividades.ActividadesScreen
 
 @Composable
 fun AppNavGraph(startDestination: String = "login") {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = startDestination) {
         composable("login") { LoginScreen(onLogin = { navController.navigate("home") }) }
-        composable("home") { HomeScreen(
-            onOpenChat = { navController.navigate("chat") }
-        ) }
+        composable("home") {
+            HomeScreen(
+                navController = navController,
+                onOpenChat = { navController.navigate("chat") }
+            )
+        }
         composable("chat") { ChatbotScreen(onBack = { navController.popBackStack() }) }
+        composable("actividades") {
+            ActividadesScreen()
+        }
     }
 }
