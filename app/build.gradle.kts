@@ -41,39 +41,31 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
     // Compose BOM (maneja versiones automáticamente)
+    // --- COMPOSE BOM (maneja versiones automáticamente) ---
     implementation(platform("androidx.compose:compose-bom:2024.10.00"))
 
-    // Core Compose
+    // --- CORE COMPOSE ---
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
 
-    // Material 3
-    implementation("androidx.compose.material3:material3:1.3.0")
+    // --- MATERIAL 3 ---
+    implementation("androidx.compose.material3:material3")
 
-    // Activity Compose
+    // --- ACTIVITY COMPOSE ---
     implementation("androidx.activity:activity-compose:1.9.3")
 
-    // Navigation Compose
+    // --- NAVIGATION COMPOSE (SOLO UNA VERSIÓN) ---
     implementation("androidx.navigation:navigation-compose:2.8.3")
 
-    // Icons Material (SOLO los de Material 3)
+    // --- ICONOS MATERIAL ---
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
 
-    // AndroidX
+    // --- ANDROIDX ---
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
-
 
     // Testing
     testImplementation("junit:junit:4.13.2")

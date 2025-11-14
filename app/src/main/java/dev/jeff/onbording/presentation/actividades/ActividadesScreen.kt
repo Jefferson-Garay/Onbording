@@ -1,6 +1,5 @@
-package dev.jeff.onbording.presentation.home.actividades
+package dev.jeff.onbording.presentation.actividades
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,9 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.jeff.onbording.data.model.ActividadModel
-
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun ActividadesScreen() {
