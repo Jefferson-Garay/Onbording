@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoginScreen(onLogin: () -> Unit) {
+fun LoginScreen(onEmployeeLogin: () -> Unit, onAdminLogin: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
 
@@ -94,7 +94,13 @@ fun LoginScreen(onLogin: () -> Unit) {
             Spacer(Modifier.height(30.dp))
 
             Button(
-                onClick = onLogin,
+                onClick = {
+                    if (email == "admin@@tcs.com" && pass == "admin123") {
+                        onAdminLogin()
+                    } else {
+                        onEmployeeLogin()
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
