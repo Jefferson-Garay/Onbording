@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dev.jeff.onbording.presentation.admin.*
 import dev.jeff.onbording.presentation.auth.LoginScreen
 import dev.jeff.onbording.presentation.chatbot.ChatbotScreen
 import dev.jeff.onbording.presentation.home.HomeWithDrawer
@@ -18,7 +19,12 @@ import dev.jeff.onbording.presentation.supervisor.SupervisorScreen
 fun AppNavGraph(startDestination: String = "login", isDarkTheme: Boolean, toggleTheme: () -> Unit) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = startDestination) {
-        composable("login") { LoginScreen(onLogin = { navController.navigate("home") }) }
+        composable("login") {
+            LoginScreen(
+                onEmployeeLogin = { navController.navigate("home") },
+                onAdminLogin = { navController.navigate("admin_home") }
+            )
+        }
         composable("home") {
             HomeWithDrawer(
                 navController,
@@ -27,6 +33,16 @@ fun AppNavGraph(startDestination: String = "login", isDarkTheme: Boolean, toggle
                 toggleTheme = toggleTheme
             ) {
                 HomeContent(navController)
+            }
+        }
+        composable("admin_home") {
+            AdminWithDrawer(
+                navController,
+                title = "Admin Home",
+                isDarkTheme = isDarkTheme,
+                toggleTheme = toggleTheme
+            ) {
+                AdminHomeScreen(navController)
             }
         }
         composable("chat") {
@@ -87,6 +103,76 @@ fun AppNavGraph(startDestination: String = "login", isDarkTheme: Boolean, toggle
                 toggleTheme = toggleTheme
             ) {
                 ConfiguracionScreen()
+            }
+        }
+        composable("chat_history") {
+            AdminWithDrawer(
+                navController,
+                title = "Historial de Chat",
+                isDarkTheme = isDarkTheme,
+                toggleTheme = toggleTheme
+            ) {
+                ChatHistoryScreen()
+            }
+        }
+        composable("proactive_messages") {
+            AdminWithDrawer(
+                navController,
+                title = "Mensajes Proactivos",
+                isDarkTheme = isDarkTheme,
+                toggleTheme = toggleTheme
+            ) {
+                ProactiveMessagesScreen()
+            }
+        }
+        composable("full_history") {
+            AdminWithDrawer(
+                navController,
+                title = "Historial Completo",
+                isDarkTheme = isDarkTheme,
+                toggleTheme = toggleTheme
+            ) {
+                FullHistoryScreen()
+            }
+        }
+        composable("user_management") {
+            AdminWithDrawer(
+                navController,
+                title = "Gestión de Usuarios",
+                isDarkTheme = isDarkTheme,
+                toggleTheme = toggleTheme
+            ) {
+                UserManagementScreen()
+            }
+        }
+        composable("admin_mi_informacion") {
+            AdminWithDrawer(
+                navController,
+                title = "Mi Información (Admin)",
+                isDarkTheme = isDarkTheme,
+                toggleTheme = toggleTheme
+            ) {
+                AdminMiInformacionScreen()
+            }
+        }
+        composable("admin_ayuda") {
+            AdminWithDrawer(
+                navController,
+                title = "Ayuda (Admin)",
+                isDarkTheme = isDarkTheme,
+                toggleTheme = toggleTheme
+            ) {
+                AdminAyudaScreen()
+            }
+        }
+        composable("admin_configuracion") {
+            AdminWithDrawer(
+                navController,
+                title = "Configuración (Admin)",
+                isDarkTheme = isDarkTheme,
+                toggleTheme = toggleTheme
+            ) {
+                AdminConfiguracionScreen()
             }
         }
     }

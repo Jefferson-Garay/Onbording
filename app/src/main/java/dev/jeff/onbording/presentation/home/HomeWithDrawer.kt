@@ -98,7 +98,8 @@ fun HomeWithDrawer(
                     onMenuClick = { scope.launch { drawerState.open() } },
                     navController = navController,
                     isDarkTheme = isDarkTheme,
-                    toggleTheme = toggleTheme
+                    toggleTheme = toggleTheme,
+                    isAdmin = false
                 )
             }
         ) { padding ->
@@ -141,7 +142,8 @@ fun HomeTopBar(
     onMenuClick: () -> Unit,
     navController: NavHostController,
     isDarkTheme: Boolean,
-    toggleTheme: () -> Unit
+    toggleTheme: () -> Unit,
+    isAdmin: Boolean
 ) {
     TopAppBar(
         title = {
@@ -169,7 +171,13 @@ fun HomeTopBar(
                     .size(40.dp)
                     .clip(CircleShape)
                     .background(Color.Blue)
-                    .clickable { navController.navigate("mi_informacion") },
+                    .clickable {
+                        if (isAdmin) {
+                            navController.navigate("admin_mi_informacion")
+                        } else {
+                            navController.navigate("mi_informacion")
+                        }
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Text("JR", color = Color.White)
