@@ -3,14 +3,20 @@ package dev.jeff.onbording.presentation.auth
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -18,6 +24,16 @@ import androidx.compose.ui.unit.sp
 fun LoginScreen(onEmployeeLogin: () -> Unit, onAdminLogin: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
+    val loginAction = {
+        if (email == "admin@tcs.com" && pass == "admin123") {
+            onAdminLogin()
+        } else {
+            onEmployeeLogin()
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -27,7 +43,7 @@ fun LoginScreen(onEmployeeLogin: () -> Unit, onAdminLogin: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFF092B5A))   // azul oscuro TCS
+                .background(Color(0xFF092B5A))
                 .padding(vertical = 40.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -79,7 +95,10 @@ fun LoginScreen(onEmployeeLogin: () -> Unit, onAdminLogin: () -> Unit) {
                 onValueChange = { email = it },
                 label = { Text("Correo electrónico") },
                 placeholder = { Text("tu.email@tcs.com") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusRequester.requestFocus() })
             )
 
             Spacer(Modifier.height(12.dp))
@@ -88,25 +107,27 @@ fun LoginScreen(onEmployeeLogin: () -> Unit, onAdminLogin: () -> Unit) {
                 value = pass,
                 onValueChange = { pass = it },
                 label = { Text("Contraseña") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                    loginAction()
+                    focusManager.clearFocus()
+                })
             )
 
             Spacer(Modifier.height(30.dp))
 
             Button(
-                onClick = {
-                    if (email == "admin@@tcs.com" && pass == "admin123") {
-                        onAdminLogin()
-                    } else {
-                        onEmployeeLogin()
-                    }
-                },
+                onClick = loginAction,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF0A1A2F) // azul muy oscuro como el de la imagen
+                    containerColor = Color(0xFF0A1A2F)
                 )
             ) {
                 Text(

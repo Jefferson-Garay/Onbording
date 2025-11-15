@@ -180,7 +180,7 @@ fun HomeTopBar(
                     },
                 contentAlignment = Alignment.Center
             ) {
-                Text("JR", color = Color.White)
+                Text(if (isAdmin) "AT" else "JR", color = Color.White)
             }
             Spacer(modifier = Modifier.width(16.dp))
             BadgedBox(
